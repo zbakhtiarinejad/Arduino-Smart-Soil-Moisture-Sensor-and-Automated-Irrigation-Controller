@@ -6,7 +6,6 @@ Traditional irrigation systems often waste large amounts of water due to rigid, 
 ## Overview
 This repository contains an automated soil moisture monitoring and smart irrigation system built and simulated in Tinkercad Circuits. The project demonstrates embedded systems fundamentals, analog-to-digital conversion, and relay-actuated control logic designed to optimize water conservation.
 
-Recent Update: The firmware has been successfully upgraded from visual block-based programming to native Arduino C++ source code, improving code readability, execution control, and alignment with professional embedded engineering standards.
 
 ## System Architecture
 
@@ -44,4 +43,7 @@ To resolve this, the sensor power wire was re-routed to the dedicated **5V power
 ## Future Enhancements
 * **LCD Display Integration:** Add an I2C 16x2 display to render real-time moisture telemetry directly on the physical hardware setup.
 * **Hysteresis Implementation:** Introduce software hysteresis to eliminate rapid relay chattering near the threshold boundary.
+
+## Recent Updates
+The firmware has been successfully upgraded from visual block-based programming to native Arduino C++ source code, improving code readability, execution control, and alignment with professional embedded engineering standards.
 
