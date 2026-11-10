@@ -2,48 +2,44 @@
 
 Traditional irrigation systems often waste large amounts of water due to rigid, timer-based schedules. This project uses an Arduino Uno combined with a soil moisture sensor and a relay module to monitor root-zone hydration in real-time and dynamically trigger a water pump only when soil moisture drops below a set threshold.
 
-Welcome to the repository for my automated soil moisture monitoring system! I built and simulated this project in Tinkercad Circuits as part of my computer engineering portfolio to explore embedded systems, sensor integration, and real-world resource management.
-System Components
 
-Arduino Uno R3: The central microcontroller processing sensor data and controlling system logic.
+## Overview
+This repository contains an automated soil moisture monitoring and smart irrigation system built and simulated in Tinkercad Circuits. The project demonstrates embedded systems fundamentals, analog-to-digital conversion, and relay-actuated control logic designed to optimize water conservation.
 
-Soil Moisture Sensor: Measures the electrical conductivity of the soil to determine water content.
+## System Architecture
 
-Relay Module: Acts as an electrically operated switch to safely drive higher-voltage actuators like a water pump.
+| Component | Function |
+| :--- | :--- |
+| **Arduino Uno R3** | Central microcontroller processing sensor signals and executing control logic. |
+| **Soil Moisture Sensor** | Measures volumetric water content via variable electrical resistance. |
+| **Relay Module** | Acts as an isolated electronic switch to control higher-power actuators. |
+| **Visual Indicators** | LEDs and the Serial Monitor provide live telemetry and system status feedback. |
 
-Visual & Serial Feedback: Integrated LEDs and the Arduino Serial Monitor provide real-time status updates.
+## Firmware and Control Logic
 
-Block Programming Logic
+The system continuously acquires data and applies real-time threshold decisions:
 
-The system runs on a continuous loop using Tinkercad's block code:
+* **Data Acquisition:** Reads analog values from the soil moisture sensor connected to analog pin `A0`.
+* **Telemetry:** Streams live readings to the Arduino Serial Monitor for debugging and performance tracking.
+* **Actuation Logic:**
+  * If moisture falls below the critical threshold ($< 100$), digital pin `8` is driven **HIGH**, activating the relay and pump circuit.
+  * Otherwise, digital pin `8` remains **LOW** to conserve water and resources.
 
-Data Acquisition: Reads the analog value from the soil moisture sensor connected to pin A0.
+## Engineering Lesson: Pin Current Limits and Circuit Safety
 
-Data Logging: Prints the current moisture reading to the Serial Monitor.
+During the development and testing phase of this circuit, an important hardware limitation was encountered regarding microcontroller pin specifications:
 
-Decision Making (Threshold Logic):
+### The Issue
+Initially, the power supply wire of the soil moisture sensor was connected directly to digital pin `D7` and set to `HIGH` in the firmware. The Tinkercad simulator triggered an immediate hardware warning:
 
-If the soil moisture value falls below 100 (indicating dry soil), the Arduino sets digital pin 8 to HIGH, activating the relay and pump.
+> *Current through I/O pin(s) D7 ($28.6\text{ mA}$) exceeds the recommended maximum of $20.0\text{ mA}$. This may reduce the usable lifetime of the Arduino.*
 
-Otherwise, it keeps pin 8 LOW to conserve water and energy.
+### The Resolution
+Digital I/O pins on microcontrollers like the ATmega328P are designed for logic signaling and data communication, not for supplying continuous operating current to external hardware modules. Drawing $28.6\text{ mA}$ exceeds the safe $20\text{ mA}$ per-pin threshold and risks thermal degradation of the chip.
 
-Engineering Reflections & Lessons Learned
+To resolve this, the sensor power wire was re-routed to the dedicated **5V power supply pin** on the Arduino board. This draws stable power directly from the onboard voltage regulator, protecting the digital I/O pins and ensuring reliable long-term hardware operation.
 
-While building and debugging this circuit, I ran into a crucial hardware lesson regarding electrical limits:
-
-The Pin D7 Power Mistake: Initially, I wired the power pin of the soil moisture sensor directly to digital pin D7 and set it HIGH in my code to power the sensor. The Tinkercad simulator immediately flagged a warning:
-Current through I/O pin(s) D7 (28.6 mA) exceeds the recommended maximum of 20.0 mA. This may reduce the usable lifetime of the Arduino.
-
-How I Fixed It:
-
-I learned that digital I/O pins on microcontrollers are designed for signaling and communication, not for supplying continuous power to external hardware modules. Drawing $28.6\text{ mA}$ exceeds the safe $20\text{ mA}$ limit of the ATmega328P pins and risks damaging the chip over time.
-
-To fix this, I re-routed the sensor's power wire directly to the dedicated 5V power supply pin on the Arduino board. This provides a stable, independent power source for the sensor without straining any digital I/O pins, keeping the microcontroller safe and efficient!
-
-🔮 Future Improvements
-
-Add an I2C 16x2 LCD display to show live moisture percentages directly on the hardware setup.
-
-Implement hysteresis to prevent the pump from rapidly toggling on and off right at the threshold boundary.
-
-Transition the block code into standard C++ Arduino code to prepare for more advanced firmware development.
+## Future Enhancements
+* **LCD Display Integration:** Add an I2C 16x2 display to render real-time moisture telemetry directly on the physical hardware setup.
+* **Hysteresis Implementation:** Introduce software hysteresis to eliminate rapid relay chattering near the threshold boundary.
+* **C++ Firmware Migration:** Transition from block-based programming to standard Arduino C++ source code to prepare for advanced bare-metal embedded design.
