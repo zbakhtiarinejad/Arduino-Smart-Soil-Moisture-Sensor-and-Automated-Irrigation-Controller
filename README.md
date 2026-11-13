@@ -1,7 +1,7 @@
 # Arduino Smart Soil Moisture Sensor & Automated Irrigation Controller
 
 Traditional irrigation systems often waste large amounts of water due to rigid, timer-based schedules. This project uses an Arduino Uno combined with a soil moisture sensor and a relay module to monitor root-zone hydration in real-time and dynamically trigger a water pump only when soil moisture drops below a set threshold.
-
+<img width="1087" height="631" alt="Screenshot 2026-11-12 163202" src="https://github.com/user-attachments/assets/8979c2f8-2528-400f-b216-6bda90829292" />
 
 ## Overview
 This repository contains an automated soil moisture monitoring and smart irrigation system built and simulated in Tinkercad Circuits. The project demonstrates embedded systems fundamentals, analog-to-digital conversion, and relay-actuated control logic designed to optimize water conservation.
